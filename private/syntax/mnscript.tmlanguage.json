@@ -1,0 +1,121 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "MNScript",
+	"patterns": [
+		{
+			"include": "#storage"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#punctuation"
+		}
+	],
+	"repository": {
+		"main-loop": {
+			"patterns": [
+				{
+					"include": "#keywords"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#numbers"
+				},
+				{
+					"include": "#constants"
+				},
+				{
+					"include": "#operators"
+				},
+				{
+					"include": "#punctuation"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.mnscript",
+					"match": "\\b(if|while|return|function|using|include|else|class|constructor)\\b"
+				}
+			]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"name": "constant.language.mnscript",
+					"match": "(?<![^.]\\.|:)\\b(false|true)"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.mnscript",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.mnscript",
+					"match": "\\\\."
+				}
+			]
+		},
+		"comments": {
+			"name": "comment.line.double-slash.mnscript",
+			"match": "(//).*$\\n?"
+		},
+		"numbers": {
+			"name": "constant.numeric.mnscript",
+			"match": "\\b\\d+(\\.\\d+)?"
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.mnscript",
+					"match": "\\|\\||\\&\\&|==?|!=|<=?|>=?|(?<!\\.)\\.{2}(?!\\.)"
+				},
+				{
+					"name": "keyword.operator.arithmetic.mnscript",
+					"match": "\\+|-|%|#|\\*|\\/|\\^"
+				},
+				{
+					"name": "keyword.operator.new.mnscript",
+					"match": "\\bnew\\b"
+				}
+			]			
+		},
+		"punctuation": {
+			"patterns": [
+				{
+					"name": "punctuation.terminator.statement.mnscript",
+					"match": ";"
+				},
+				{
+					"name": "punctuation.separator.delimiter.mnscript",
+					"match": ","
+				}
+			]
+		}
+	},
+	"scopeName": "source.mnscript"
+}

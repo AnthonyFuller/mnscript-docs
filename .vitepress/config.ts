@@ -1,6 +1,6 @@
 import { defineConfig } from "vitepress"
 import { SitemapStream } from "sitemap"
-import { createWriteStream } from "node:fs"
+import { createWriteStream, readFileSync } from "fs"
 import { resolve } from "node:path"
 
 const links: any = []
@@ -8,7 +8,7 @@ const links: any = []
 export default defineConfig({
     title: "MNScript",
     description: "An unofficial documentation hub for the MNScript programming language.",
-    srcExclude: ["README.md"],
+    srcExclude: ["README.md", "private/**/*.*"],
     themeConfig: {
         logo: "/images/logo.png",
         nav: [
@@ -38,5 +38,15 @@ export default defineConfig({
         links.forEach((link) => sitemap.write(link))
         sitemap.end()
         await new Promise((r) => writeStream.on("finish", r))
+    },
+    markdown: {
+        languages: [
+            {
+                id: "mnscript",
+                scopeName: "source.mnscript",
+                path: "../../private/syntax/mnscript.tmlanguage.json",
+                aliases: ["mnsc", "msc"]
+            }
+        ]
     }
 })
