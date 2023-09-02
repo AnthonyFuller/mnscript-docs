@@ -1,0 +1,18 @@
+{
+    "name": "mnscript-docs",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/AnthonyFuller/mnscript-docs",
+    "author": "Anthony Fuller et al.",
+    "license": "GPL-3.0-or-later",
+    "type": "module",
+    "devDependencies": {
+        "sitemap": "^7.1.1",
+        "vitepress": "^1.0.0-rc.10"
+    },
+    "scripts": {
+        "dev": "vitepress dev",
+        "build": "vitepress build",
+        "preview": "vitepress preview"
+    }
+}
