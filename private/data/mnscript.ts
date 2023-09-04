@@ -68,7 +68,7 @@ async function generateDocsPage(data: MNScriptFunction, library?: string): Promi
         for (const i in data.args) {
             // If the function has args, it will also have descriptions.
             page += `${data.args[i]}`
-            if (data.argsDesc) page += ` - ${data.argsDesc[i]}`
+            if (data.argsDesc && data.argsDesc[i]) page += ` - ${data.argsDesc[i]}`
             page += `  \n`
         }
     }
