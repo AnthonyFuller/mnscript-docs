@@ -127,7 +127,7 @@ export async function getMNScriptData(): Promise<MNScriptData> {
                         desc: f.desc,
                         path: `${library.name}/${c.name}/${f.name}`
                     },
-                    content: await generateDocsPage(f, library.name)
+                    content: await generateDocsPage(f, c.name)
                 })
             }
         }
