@@ -1,4 +1,4 @@
-import { DefaultTheme, defineConfig, resolvePages, UserConfig } from "vitepress"
+import { DefaultTheme, defineConfig, HeadConfig, resolvePages, UserConfig } from "vitepress"
 
 const CONFIG: UserConfig<DefaultTheme.Config> = {
     title: "MNScript",
@@ -9,10 +9,28 @@ const CONFIG: UserConfig<DefaultTheme.Config> = {
         nav: [
             { text: "CivilNetworks", link: "https://civilgamers.com" }
         ],
-        sidebar: [],
+        sidebar: [
+            {
+                text: "Fundamentals",
+                items: [
+                    {
+                        text: "Language Syntax",
+                        link: "/fundamentals/syntax"
+                    }
+                ]
+            }
+        ],
         socialLinks: [
             { icon: "github", link: "https://github.com/AnthonyFuller/mnscript-docs" }
-        ]
+        ],
+        search: {
+            provider: "algolia",
+            options: {
+                appId: "JDJEERR1J6",
+                apiKey: "b8fd5ccb04669bf361dc5059cfc668dd",
+                indexName: "mnscript"
+            }
+        }
     },
     cleanUrls: true,
     markdown: {
@@ -29,11 +47,23 @@ const CONFIG: UserConfig<DefaultTheme.Config> = {
         hostname: "https://mnscript.com"
     },
     async transformPageData(pageData, { siteConfig }) {
-        if (pageData.filePath.startsWith("events/") || pageData.filePath.startsWith("libraries/")) {
+        if ((pageData.filePath.startsWith("events/") || pageData.filePath.startsWith("libraries/")) && !pageData.filePath.endsWith("index.md")) {
+            // Add missing titles and descriptions.
             if (!pageData.title) {
                 pageData.title = pageData.params!.title
+            }
+
+            if (!pageData.description && pageData.params!.desc) {
                 pageData.description = pageData.params!.desc
             }
+
+            // Add custom tag for Algolia search.
+            pageData.frontmatter.head ??= []
+            pageData.frontmatter.head.push([
+                "searchpath",
+                {},
+                pageData.params!.search
+            ])
         }
     }
 }
@@ -44,12 +74,13 @@ const reference: DefaultTheme.SidebarItem = {
     items: [
         {
             text: "Libraries",
+            link: "/libraries",
             collapsed: true,
             items: []
         },
         {
             text: "Events",
-            link: "/events/",
+            link: "/events",
             collapsed: true,
             items: []
         }
@@ -65,9 +96,11 @@ for (const rawPath of pages.pages) {
     const path = rawPath.substring(0, rawPath.length - 3).split("/")
     const isClass = path.length === 4
 
+    // Add libraries.
     if (path.at(0) == "libraries" && path.at(-1) != "index") {
         libraries[path.at(1)!] ??= {
             text: path.at(1),
+            link: `/libraries/${path.at(1)}`,
             collapsed: true,
             items: [
                 {
@@ -84,17 +117,21 @@ for (const rawPath of pages.pages) {
         }
 
         if (isClass) {
+            // This is a class, so add a new entry if it doesn't exist.
             classes[`${path.at(1)}/${path.at(2)}`] ??= {
                 text: path.at(2),
+                link: path.slice(0, 3).join("/"),
                 collapsed: true,
                 items: []
             }
 
+            // Add function to class.
             classes[`${path.at(1)}/${path.at(2)}`].items?.push({
                 text: path.at(3),
                 link: path.join("/")
             })
         } else {
+            // Add function to library.
             libraries[path.at(1)!].items![1].items!.push({
                 text: path.at(2),
                 link: path.join("/")
@@ -102,6 +139,7 @@ for (const rawPath of pages.pages) {
         }
     }
 
+    // Add events.
     if (path.at(0) == "events" && path.at(-1) != "index") {
         reference.items![1].items!.push({
             text: path.at(-1),
@@ -110,25 +148,18 @@ for (const rawPath of pages.pages) {
     }
 }
 
-classes = Object.keys(classes).sort().reduce((obj, key) => {
-    obj[key] = classes[key]; 
-    return obj;
-}, {})
-
+// Add classes to libraries.
 for (const [key, contents] of Object.entries(classes)) {
     const [library, _] = key.split("/")
     libraries[library].items![0].items!.push(contents)
 }
 
-libraries = Object.keys(libraries).sort().reduce((obj, key) => {
-    if (libraries[key].items![0].items?.length == 0) {
-        delete libraries[key].items![0]
-    }
+// Remove empty class entries.
+Object.values(libraries).forEach((value) => {
+    if (value.items![0].items?.length == 0) delete value.items![0]
+})
 
-    obj[key] = libraries[key]; 
-    return obj;
-}, {})
-
+// Add libraries to sidebar.
 reference.items![0].items = Object.values(libraries);
 
 ((CONFIG.themeConfig?.sidebar) as DefaultTheme.SidebarItem[]).push(reference)
