@@ -80,7 +80,7 @@ export interface MNScriptData {
     types: MNScriptTypes
 }
 
-function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes, parent?: string, linkFunction = false, isLibrary = true): string {
+function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes, parent?: string, linkFunction = false, isLibrary = false): string {
     let sig = ""
 
     // Add the return type with link if possible.
