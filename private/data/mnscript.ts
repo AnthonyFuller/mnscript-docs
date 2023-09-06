@@ -80,7 +80,7 @@ export interface MNScriptData {
     types: MNScriptTypes
 }
 
-function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes, parent?: string, linkFunction = false): string {
+function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes, parent?: string, linkFunction = false, isLibrary = true): string {
     let sig = ""
 
     // Add the return type with link if possible.
@@ -97,7 +97,7 @@ function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes,
     sig += `${parent + "." ?? ""}`
     if (linkFunction) {
         // Link function will only ever be true when it is a class/library page.
-        const link = (parent! in types) ? `${types[parent!]}${data.name}` : `/libraries/${parent}/${data.name}`
+        const link = !isLibrary && (parent! in types) ? `${types[parent!]}${data.name}` : `/libraries/${parent}/${data.name}`
         sig += `<a href="${link}">${data.name}</a>`
     } else {
         sig += data.name
@@ -194,7 +194,7 @@ function generateLibraryPage(data: MNScriptLibrary, types: MNScriptTypes): strin
         page += `## Functions\n`
         data.functions.forEach((f) => {
             // Generate a "fake" codeblock, that allows us to place links inside.
-            page += `::: raw\n<Codeblock>${generateFunctionSignature(f, types, data.name, true)}</Codeblock>\n:::\n`
+            page += `::: raw\n<Codeblock>${generateFunctionSignature(f, types, data.name, true, true)}</Codeblock>\n:::\n`
 
             page += `- ${f.desc ?? "\t*No description available*"}  \n`
         })
