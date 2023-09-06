@@ -4,6 +4,27 @@
  * Also exposes types for all these for easy usage.
  */
 
+// Recursively sort a MNScriptDocs object alphabetically.
+function sortDocs(data: MNScriptDocs): MNScriptDocs {
+    const comparitor = (a, b) => a.name.localeCompare(b.name)
+
+    const sorted: MNScriptDocs = {
+        events: data.events.sort(comparitor),
+        libraries: data.libraries.sort(comparitor)
+    }
+
+    sorted.libraries.forEach((value) => {
+        value.classes.sort(comparitor)
+        value.classes.forEach((value) => {
+            value.functions.sort(comparitor)
+        })
+
+        value.functions.sort(comparitor)
+    })
+
+    return sorted
+}
+
 export interface MNScriptFunction {
     name: string
     desc: string
@@ -17,11 +38,13 @@ export interface MNScriptFunction {
 
 export interface MNScriptClass {
     name: string
+    desc?: string
     functions: MNScriptFunction[]
 }
 
 export interface MNScriptLibrary {
     name: string
+    desc?: string
     functions: MNScriptFunction[]
     classes: MNScriptClass[]
 }
@@ -43,6 +66,7 @@ export interface MNScriptPage {
         title: string
         desc: string
         path: string
+        search: string
     }
     content: string
 }
@@ -56,25 +80,79 @@ export interface MNScriptData {
     types: MNScriptTypes
 }
 
-async function generateDocsPage(data: MNScriptFunction, library?: string): Promise<string> {
-    let page = ""
-    // TODO: Generate function signature with custom component?
-    page += `\`\`\`\n${(data.returnType && data.returnType != "Unknown") ? data.returnType : ""} ${(library + ".") ?? ""}${data.name}(${data.args ? data.args.join(", ") : ""})\n\`\`\`\n`
+function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes, parent?: string, linkFunction = false): string {
+    let sig = ""
 
-    page += `## Description\n${data.desc}\n`
+    // Add the return type with link if possible.
+    if (data.returnType && data.returnType != "Unknown") {
+        const lookup = data.returnType.endsWith("[]") ? data.returnType.slice(0, -2) : data.returnType
+        if (lookup in types) {
+            sig += `<a href="${types[lookup]}">${data.returnType}</a> `
+        } else {
+            sig += `${data.returnType} `
+        }
+    }
+
+    // Add the parent + function name.
+    sig += `${parent + "." ?? ""}`
+    if (linkFunction) {
+        // Link function will only ever be true when it is a class/library page.
+        sig += `<a href="${types[parent!] ?? "/libraries/" + parent}${data.name}">${data.name}</a>`
+    } else {
+        sig += data.name
+    }
+
+    // Time for some arguments.
+    sig += "("
+    if (data.args) {
+        for (let [i, value] of data.args.entries()) {
+            if (value in types) {
+                const link = value.endsWith("[]") ? types[value.slice(0, -2)] : types[value]
+                value = `<a href="${link}">${value}</a>`
+            }
+
+            sig += `${value}${i + 1 != data.args.length ? ", " : ""}`
+        }
+    }
+    sig += ")\n"
+
+    return sig
+}
+
+function generateFunctionPage(data: MNScriptFunction, types: MNScriptTypes, parent?: string): string {
+    let page = ""
+
+    // Generate a "fake" codeblock, that allows us to place links inside.
+    page += `::: raw\n<Codeblock>${generateFunctionSignature(data, types, parent)}</Codeblock>\n:::\n`
+
+    page += `## Description\n${data.desc ?? "*No description available*"}\n`
 
     if (data.args && data.args.length != 0) {
         page +=  `## Arguments\n`
-        for (const i in data.args) {
-            // If the function has args, it will also have descriptions.
-            page += `${data.args[i]}`
+        for (const [i, value] of data.args.entries()) {
+            if (value in types) {
+                page += `[${value}](${types[value]})`
+            } else {
+                page += value
+            }
+
+            // If the function has args, it may also have descriptions.
             if (data.argsDesc && data.argsDesc[i]) page += ` - ${data.argsDesc[i]}`
             page += `  \n`
         }
     }
 
     if (data.returnType && data.returnType != "Unknown") {
-        page += `## Returns\n${data.returnType} - ${data.returnDesc}\n`
+        page += `## Returns\n`
+
+        if (data.returnType in types) {
+            page += `[${data.returnType}](${types[data.returnType]})`
+        } else {
+            page += data.returnType
+        }
+
+        if (data.returnDesc) page += ` - ${data.returnDesc}`
+        page += "\n"
     }
 
     if (data.example) {
@@ -84,13 +162,66 @@ async function generateDocsPage(data: MNScriptFunction, library?: string): Promi
     return page
 }
 
+function generateClassPage(data: MNScriptClass, types: MNScriptTypes): string {
+    let page = `# ${data.name}\n`
+    page += `${data.desc ?? "*No description available*"}\n`
+    
+    page += `## Functions\n`
+    data.functions.forEach((f) => {
+        // Generate a "fake" codeblock, that allows us to place links inside.
+        page += `::: raw\n<Codeblock>${generateFunctionSignature(f, types, data.name, true)}</Codeblock>\n:::\n`
+
+        page += `- ${f.desc ?? "\t*No description available*"}  \n`
+    })
+
+    return page
+}
+
+function generateLibraryPage(data: MNScriptLibrary, types: MNScriptTypes): string {
+    let page = `# ${data.name}\n`
+    page += `${data.desc ?? "*No description available*"}\n`
+
+    if (data.classes.length) {
+        page += `## Classes\n`
+        data.classes.forEach((c) => {
+            const desc = c.desc ? ` - ${c.desc}` : ""
+            page += `[${c.name}](/libraries/${data.name}/${c.name}/)${desc}\n`
+        })
+    }
+
+    if (data.functions.length) {
+        page += `## Functions\n`
+        data.functions.forEach((f) => {
+            // Generate a "fake" codeblock, that allows us to place links inside.
+            page += `::: raw\n<Codeblock>${generateFunctionSignature(f, types, data.name, true)}</Codeblock>\n:::\n`
+
+            page += `- ${f.desc ?? "\t*No description available*"}  \n`
+        })
+    }
+
+    return page
+}
+
 export async function getMNScriptData(): Promise<MNScriptData> {
-    const docs: MNScriptDocs = await (await fetch("https://mnscript.civilservers.net/json/mnscript_docs.json")).json()
+    const docs: MNScriptDocs = sortDocs(await (await fetch("https://mnscript.civilservers.net/json/mnscript_docs.json")).json())
 
     const data: MNScriptData = {
         events: [],
         libraries: [],
-        types: {}
+        // Prefill the types LUT with primitives.
+        types: {
+            "number": "/fundamentals/syntax#primitives",
+            "string": "/fundamentals/syntax#primitives",
+            "bool": "/fundamentals/syntax#primitives"
+        }
+    }
+
+    // Initialise the types LUT first before generating any pages.
+    for (const library of docs.libraries) {
+        for (const c of library.classes) {
+            // Add to the types map.
+            data.types[c.name] = `/libraries/${library.name}/${c.name}/`
+        }
     }
 
     for (const event of docs.events) {
@@ -98,9 +229,10 @@ export async function getMNScriptData(): Promise<MNScriptData> {
             params: {
                 title: event.name,
                 desc: event.desc,
-                path: event.name
+                path: event.name,
+                search: event.name
             },
-            content: await generateDocsPage(event)
+            content: generateFunctionPage(event, data.types)
         })
     }
 
@@ -108,29 +240,48 @@ export async function getMNScriptData(): Promise<MNScriptData> {
         for (const f of library.functions) {
             data.libraries.push({
                 params: {
-                    title: `${library.name}.${f.name}`,
+                    title: `${f.name}`,
                     desc: f.desc,
-                    path: `${library.name}/${f.name}`
+                    path: `${library.name}/${f.name}`,
+                    search: `${library.name}.${f.name}`
                 },
-                content: await generateDocsPage(f, library.name)
+                content: generateFunctionPage(f, data.types, library.name)
             })
         }
 
         for (const c of library.classes) {
-            // Add to the types map.
-            data.types[c.name] = `libraries/${library.name}/${c.name}`
-
             for (const f of c.functions) {
                 data.libraries.push({
                     params: {
                         title: `${f.name}`,
                         desc: f.desc,
-                        path: `${library.name}/${c.name}/${f.name}`
+                        path: `${library.name}/${c.name}/${f.name}`,
+                        search: `${c.name}.${f.name}`
                     },
-                    content: await generateDocsPage(f, c.name)
+                    content: generateFunctionPage(f, data.types, c.name)
                 })
             }
+
+            data.libraries.push({
+                params: {
+                    title: c.name,
+                    desc: c.desc!,
+                    path: `${library.name}/${c.name}/index`,
+                    search: c.name
+                },
+                content: generateClassPage(c, data.types)
+            })
         }
+
+        data.libraries.push({
+            params: {
+                title: library.name,
+                desc: library.desc!,
+                path: `${library.name}/index`,
+                search: library.name
+            },
+            content: generateLibraryPage(library, data.types)
+        })
     }
 
     return data
