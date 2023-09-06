@@ -100,7 +100,7 @@ for (const rawPath of pages.pages) {
     if (path.at(0) == "libraries" && path.at(-1) != "index") {
         libraries[path.at(1)!] ??= {
             text: path.at(1),
-            link: `/libraries/${path.at(1)}`,
+            link: `/libraries/${path.at(1)}/`, // Must add trailing slash to avoid 301/2
             collapsed: true,
             items: [
                 {
@@ -120,7 +120,7 @@ for (const rawPath of pages.pages) {
             // This is a class, so add a new entry if it doesn't exist.
             classes[`${path.at(1)}/${path.at(2)}`] ??= {
                 text: path.at(2),
-                link: path.slice(0, 3).join("/"),
+                link: path.slice(0, 3).join("/") + "/", // Must add trailing slash to avoid 301/2
                 collapsed: true,
                 items: []
             }
