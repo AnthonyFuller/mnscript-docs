@@ -185,7 +185,7 @@ function generateLibraryPage(data: MNScriptLibrary, types: MNScriptTypes): strin
         page += `## Classes\n`
         data.classes.forEach((c) => {
             const desc = c.desc ? ` - ${c.desc}` : ""
-            page += `[${c.name}](/libraries/${data.name}/${c.name}/)${desc}\n`
+            page += `- [${c.name}](/libraries/${data.name}/${c.name}/)${desc}\n`
         })
     }
 
