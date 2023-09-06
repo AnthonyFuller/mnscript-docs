@@ -164,7 +164,7 @@ function generateFunctionPage(data: MNScriptFunction, types: MNScriptTypes, pare
 }
 
 function generateClassPage(data: MNScriptClass, types: MNScriptTypes): string {
-    let page = `# ${data.name}\n`
+    let page = `# ${data.name} <Badge type="info" text="class" />\n`
     page += `${data.desc ?? "*No description available*"}\n`
     
     page += `## Functions\n`
@@ -179,7 +179,7 @@ function generateClassPage(data: MNScriptClass, types: MNScriptTypes): string {
 }
 
 function generateLibraryPage(data: MNScriptLibrary, types: MNScriptTypes): string {
-    let page = `# ${data.name}\n`
+    let page = `# ${data.name} <Badge type="tip" text="library" />\n`
     page += `${data.desc ?? "*No description available*"}\n`
 
     if (data.classes.length) {
