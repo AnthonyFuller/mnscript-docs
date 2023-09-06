@@ -74,13 +74,13 @@ const reference: DefaultTheme.SidebarItem = {
     items: [
         {
             text: "Libraries",
-            link: "/libraries",
+            link: "/libraries/",
             collapsed: true,
             items: []
         },
         {
             text: "Events",
-            link: "/events",
+            link: "/events/",
             collapsed: true,
             items: []
         }
@@ -120,7 +120,7 @@ for (const rawPath of pages.pages) {
             // This is a class, so add a new entry if it doesn't exist.
             classes[`${path.at(1)}/${path.at(2)}`] ??= {
                 text: path.at(2),
-                link: path.slice(0, 3).join("/") + "/", // Must add trailing slash to avoid 301/2
+                link: "/" + path.slice(0, 3).join("/") + "/", // Must add trailing slash to avoid 301/2
                 collapsed: true,
                 items: []
             }

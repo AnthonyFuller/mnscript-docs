@@ -97,7 +97,7 @@ function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes,
     sig += `${parent + "." ?? ""}`
     if (linkFunction) {
         // Link function will only ever be true when it is a class/library page.
-        sig += `<a href="${types[parent!] ?? "/libraries/" + parent}/${data.name}">${data.name}</a>`
+        sig += `<a href="${`${types[parent!]}` ?? `/libraries/${parent}/${data.name}`}">${data.name}</a>`
     } else {
         sig += data.name
     }
