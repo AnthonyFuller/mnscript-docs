@@ -131,8 +131,10 @@ function generateFunctionPage(data: MNScriptFunction, types: MNScriptTypes, pare
     if (data.args && data.args.length != 0) {
         page +=  `## Arguments\n`
         for (const [i, value] of data.args.entries()) {
-            if (value in types) {
-                page += `[${value}](${types[value]})`
+            const lookup = value.endsWith("[]") ? value.slice(0, -2) : value
+            
+            if (lookup in types) {
+                page += `[${value}](${types[lookup]})`
             } else {
                 page += value
             }
@@ -144,10 +146,12 @@ function generateFunctionPage(data: MNScriptFunction, types: MNScriptTypes, pare
     }
 
     if (data.returnType && data.returnType != "Unknown") {
+        const lookup = data.returnType.endsWith("[]") ? data.returnType.slice(0, -2) : data.returnType
+
         page += `## Returns\n`
 
-        if (data.returnType in types) {
-            page += `[${data.returnType}](${types[data.returnType]})`
+        if (lookup in types) {
+            page += `[${data.returnType}](${types[lookup]})`
         } else {
             page += data.returnType
         }
