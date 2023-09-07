@@ -154,9 +154,10 @@ for (const [key, contents] of Object.entries(classes)) {
     libraries[library].items![0].items!.push(contents)
 }
 
-// Remove empty class entries.
+// Remove empty class and function entries.
 Object.values(libraries).forEach((value) => {
     if (value.items![0].items?.length == 0) delete value.items![0]
+    if (value.items![1].items?.length == 0) delete value.items![1]
 })
 
 // Add libraries to sidebar.
