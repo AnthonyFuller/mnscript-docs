@@ -1,4 +1,5 @@
 import DefaultTheme from "vitepress/theme"
+import "./styles/sidebar.css"
 
 import Codeblock from "./components/Codeblock.vue"
 
