@@ -133,11 +133,13 @@ function generateFunctionPage(data: MNScriptFunction, types: MNScriptTypes, pare
         for (const [i, value] of data.args.entries()) {
             const lookup = value.endsWith("[]") ? value.slice(0, -2) : value
             
+            page += "<code>"
             if (lookup in types) {
                 page += `[${value}](${types[lookup]})`
             } else {
                 page += value
             }
+            page += "</code>"
 
             // If the function has args, it may also have descriptions.
             if (data.argsDesc && data.argsDesc[i]) page += ` - ${data.argsDesc[i]}`
@@ -150,11 +152,13 @@ function generateFunctionPage(data: MNScriptFunction, types: MNScriptTypes, pare
 
         page += `## Returns\n`
 
+        page += "<code>"
         if (lookup in types) {
             page += `[${data.returnType}](${types[lookup]})`
         } else {
             page += data.returnType
         }
+        page += "</code>"
 
         if (data.returnDesc) page += ` - ${data.returnDesc}`
         page += "\n"
