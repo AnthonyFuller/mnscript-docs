@@ -3,6 +3,7 @@
  * 
  * Also exposes types for all these for easy usage.
  */
+import { readFileSync } from "node:fs"
 
 // Recursively sort a MNScriptDocs object alphabetically.
 function sortDocs(data: MNScriptDocs): MNScriptDocs {
@@ -212,7 +213,12 @@ function generateLibraryPage(data: MNScriptLibrary, types: MNScriptTypes): strin
 }
 
 export async function getMNScriptData(): Promise<MNScriptData> {
-    const docs: MNScriptDocs = sortDocs(await (await fetch("https://mnscript.civilservers.net/json/mnscript_docs.json")).json())
+    // Get the latest docs and sort it, so it looks nice.
+    const docs: MNScriptDocs = sortDocs(
+        process.env.MNSCRIPT_FILE
+            ? readFileSync("./mnscript_docs.json")
+            : await (await fetch("https://mnscript.civilservers.net/json/mnscript_docs.json")).json()
+        )
 
     const data: MNScriptData = {
         events: [],
@@ -233,6 +239,7 @@ export async function getMNScriptData(): Promise<MNScriptData> {
         }
     }
 
+    // Generate pages for events.
     for (const event of docs.events) {
         data.events.push({
             params: {
@@ -246,6 +253,7 @@ export async function getMNScriptData(): Promise<MNScriptData> {
     }
 
     for (const library of docs.libraries) {
+        // Generate library function pages.
         for (const f of library.functions) {
             data.libraries.push({
                 params: {
@@ -258,7 +266,9 @@ export async function getMNScriptData(): Promise<MNScriptData> {
             })
         }
 
+        // Generate library class pages.
         for (const c of library.classes) {
+            // Generate class function pages.
             for (const f of c.functions) {
                 data.libraries.push({
                     params: {
@@ -271,6 +281,7 @@ export async function getMNScriptData(): Promise<MNScriptData> {
                 })
             }
 
+            // Generate class "overview" page.
             data.libraries.push({
                 params: {
                     title: c.name,
@@ -282,6 +293,7 @@ export async function getMNScriptData(): Promise<MNScriptData> {
             })
         }
 
+        // Generate library "overview" page.
         data.libraries.push({
             params: {
                 title: library.name,
