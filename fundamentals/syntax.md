@@ -33,9 +33,11 @@ MNScript has three "primitive" data types which all other data types work with.
 | `string`      	| Holds text, or a "string" of characters.    	| An empty block of text (aka `""`) 	|
 | `bool`        	| Holds either the value of `true` or `false` 	| `false`                           	|
 
-Arrays are also supported in MNScript, the type for these can be `any[]` where `any` is any type, primitive or class.
-
 All other types are **classes** either exposed through built-in libraries or user-generated files (more on this later).
+
+## Arrays
+
+MNScript supports *static* arrays (meaning their size is defined when they're created). The notation for these are `<type>[]` where `<type>` can be any type, primitive or class.
 
 ## Variables
 
