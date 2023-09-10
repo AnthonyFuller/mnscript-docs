@@ -6,11 +6,11 @@ outline: deep
 
 This website acts as an unofficial documentation website for CivilNetworks' MNScript programming language.
 
-:::warning WIP
-This website is a work in progress!
-:::
+## Where should I start?
 
-Currently, this website has libraries and events loaded from the official documentation JSON file.
+If you're new to MNScript, start with the [fundamentals](/fundamentals/getting-started) series of articles.
+
+If you're well versed in MNScript already, you can check out the API reference on the sidebar.
 
 ## Notices
 
