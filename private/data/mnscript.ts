@@ -216,9 +216,9 @@ export async function getMNScriptData(): Promise<MNScriptData> {
     // Get the latest docs and sort it, so it looks nice.
     const docs: MNScriptDocs = sortDocs(
         process.env.MNSCRIPT_FILE
-            ? readFileSync("./mnscript_docs.json")
+            ? readFileSync("./mnscript_docs.json").toJSON()
             : await (await fetch("https://mnscript.civilservers.net/json/mnscript_docs.json")).json()
-        )
+    )
 
     const data: MNScriptData = {
         events: [],
