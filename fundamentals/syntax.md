@@ -12,7 +12,7 @@ This page is a work in progress. Please excuse any unfinished sections or errors
 
 MNScript's syntax is a hybrid of C# and Lua. If you know either of these languages, MNScript may look slightly familiar.
 
-We will now go over various constructs and how they work in MNScript with provided examples.
+We will now go over various basic constructs and how they work in MNScript with provided examples. More advanced constructs will be covered in a future section.
 
 Here are some basic syntax rules:
 - All one-line statements (declaring variables, assigning variables, calling functions, etc) must *end* with a semicolon `;`.
