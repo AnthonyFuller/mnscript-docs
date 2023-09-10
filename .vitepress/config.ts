@@ -14,6 +14,10 @@ const CONFIG: UserConfig<DefaultTheme.Config> = {
                 text: "Fundamentals",
                 items: [
                     {
+                        text: "Getting Started",
+                        link: "/fundamentals/getting-started"
+                    },
+                    {
                         text: "Language Syntax",
                         link: "/fundamentals/syntax"
                     }
@@ -39,6 +43,7 @@ const CONFIG: UserConfig<DefaultTheme.Config> = {
                 id: "mnscript",
                 scopeName: "source.mnscript",
                 path: "../../private/syntax/mnscript.tmlanguage.json",
+                displayName: "MNScript",
                 aliases: ["mnsc", "msc"]
             }
         ]
