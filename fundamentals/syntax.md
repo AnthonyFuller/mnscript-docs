@@ -1,6 +1,6 @@
 ---
 title: Language Syntax
-desc: The syntax of MNScript.
+description: The basic syntax of MNScript.
 next: false
 ---
 
