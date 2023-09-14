@@ -8,7 +8,7 @@
     "type": "module",
     "devDependencies": {
         "@types/node": "^20.6.0",
-        "vitepress": "^1.0.0-rc.11"
+        "vitepress": "^1.0.0-rc.13"
     },
     "scripts": {
         "dev": "vitepress dev",
