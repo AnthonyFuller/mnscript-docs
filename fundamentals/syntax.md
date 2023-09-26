@@ -193,6 +193,8 @@ rangeCheck(6, 1, 10); // This would output 6.
 rangeCheck(15, 1, 10); // This would do nothing as it is out of range.
 ```
 
+Note that this function does not have a return type, so we don't actually return anything. We use the `return` keyword, to stop the function from progressing further.
+
 **Example 3**: Take two numbers and subtract the first from the second, return false if it is negative, true if it is positive or 0.
 ```mnscript
 function<bool> isPositive(number a, number b) {
@@ -206,4 +208,78 @@ function<bool> isPositive(number a, number b) {
 
 isPositive(5, 10); // This would return true.
 isPositive(10, 5); // This would return false.
+```
+
+## Libraries
+
+In MNScript you interact with the game world using libraries. Libraries are composed of functions, classes, and events.
+
+You can think of a library function as a machine in a factory:
+- Each machine has certain inputs that it requires in order to properly perform its job.
+- Each machine will perform a specific task using the materials that you give it.
+- You don't need to understand every last detail about a machine to operate it; you can use them without really understanding how they work internally.
+- Different machines do different things, but all the machines in a single factory are for a single purpose (all the machines in a Coca-Cola factory will be there to help manufacture new drinks).
+
+Each of the points listed above regarding machines can be applied to library functions in MNScript; and below is a brief image showing the `ToNumber` function from the `Util` library.
+
+Library functions can be called the same way as normal functions as [shown above](#functions).
+
+In this image, the library function is the black box in the centre, the input is the arrow pointing into the box and the output is the arrow pointing away from the box.
+In this example, you can see that we give the function the string `"312.25"` and that it outputs the number `312.25`.
+
+Please note that the input is surrounded by speech marks and that the output isn't; this is intentional, and it's because the input is a string (text) value,
+whereas the output is a number value that we can treat like an actual number and perform calculations on.
+
+![Factory showing the string `"312.25"` going in to `Util.ToNumber` and the number `312.25` coming out.](/images/fundamentals/tonumber_factory.png)
+
+You can see how the `Util.ToNumber` function is defined in the docs [here](/libraries/Util/ToNumber).
+
+To use a library in code, you must have a `using` statement before using said library (we call this *importing* the library). For example, to use the `Util.ToNumber` function, you must have `using Util;`
+somewhere before that function call. It is recommended that you place all your `using` statements at the top of your program before any code.
+This ensures your imports are nicely organized, and you can use those libraries anywhere in the code that follows.
+
+**Example**:  
+Your client, VBank, has contacted you and has asked you to develop an application for them. They need an application that will allow their staff to easily calculate compound interest so that
+their bank tellers can provide a more streamlined service. You should design an application that will allow the user to enter three numbers: their starting bank balance, yearly interest rate
+as well as the number of years that interest needs to be calculated for. This application must allow bank tellers to enter the numbers, and therefore hard-coding values into a program is not an option.
+
+Let's look at this specification, and break down what our program needs to do:
+1. We should prompt the bank teller to enter the starting bank balance
+2. We should then read the starting bank balance into the application
+3. We should then ask the bank teller to enter the account's interest rate, and then read it into the application
+4. To retrieve the last of the data that we need to work with, we should prompt the teller to enter the number of years that we should calculate compound interest for
+5. Apply the formula `(starting_balance * (interest_rate ^ years))` to calculate the resulting bank balance (^ = to the power of)
+6. We should inform the bank teller of the final bank balance
+
+In order to complete this task, we'll need to use two libraries:
+
+- `Console` - The console library will be used to write prompts out to the user, and to read the text that the user enters
+- `Util` - The util library will be needed so that we can convert string inputs into numbers so that we can perform maths on the numbers entered
+```mnscript
+// Let the program know that we will need the Console and Util libraries
+using Console;
+using Util;
+
+// Get the starting bank balance
+Console.WriteLine("Please enter the starting bank balance");
+string startingBalanceInput = Console.ReadLine();
+
+// Get the account's interest rate
+Console.WriteLine("Please enter the account's interest rate");
+string interestRateInput = Console.ReadLine();
+
+// Get the number of years
+Console.WriteLine("Please enter the number of years to calculate interest over");
+string yearsInput = Console.ReadLine();
+
+// Convert the strings provided into numbers that we can use
+number startingBalance = Util.ToNumber(startingBalanceInput);
+number interestRate = Util.ToNumber(interestRateInput);
+number years = Util.ToNumber(yearsInput);
+
+// Calculate the final balance
+number finalBalance = startingBalance * ((1 + interestRate) ^ years);
+
+// Tell the user what the final balance is
+Console.WriteLine("The final account balance is: "..finalBalance);
 ```
