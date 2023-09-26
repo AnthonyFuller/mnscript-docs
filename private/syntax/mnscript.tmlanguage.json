@@ -57,7 +57,7 @@
 			"patterns": [
 				{
 					"name": "keyword.control.mnscript",
-					"match": "\\b(if|while|return|function|using|include|else|class|constructor)\\b"
+					"match": "\\b(if|while|return|function|using|include|else|class|constructor|continue|break)\\b"
 				}
 			]
 		},
