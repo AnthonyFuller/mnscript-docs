@@ -108,10 +108,10 @@ function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes,
     sig += "("
     if (data.args) {
         for (let [i, value] of data.args.entries()) {
-            if (value in types) {
-                const link = value.endsWith("[]") ? types[value.slice(0, -2)] : types[value]
-                value = `<a href="${link}">${value}</a>`
-            }
+            const lookup = value.endsWith("[]") ? value.slice(0, -2) : value
+
+            if (lookup in types)
+                value = `<a href="${types[lookup]}">${value}</a>`
 
             sig += `${value}${i + 1 != data.args.length ? ", " : ""}`
         }
@@ -216,7 +216,7 @@ export async function getMNScriptData(): Promise<MNScriptData> {
     // Get the latest docs and sort it, so it looks nice.
     const docs: MNScriptDocs = sortDocs(
         process.env.MNSCRIPT_FILE
-            ? readFileSync("./mnscript_docs.json").toJSON()
+            ? JSON.parse(readFileSync("./mnscript_docs.json", "utf-8"))
             : await (await fetch("https://mnscript.civilservers.net/json/mnscript_docs.json")).json()
     )
 
