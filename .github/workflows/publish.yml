@@ -31,7 +31,7 @@ jobs:
       - name: Build Site
         run: |
           yarn install
-          NODE_OPTIONS="--max_old_space_size=8192" yarn build
+          NODE_OPTIONS="--max_old_space_size=8192" MNSCRIPT_FILE=true yarn build
 
       - name: Upload Site
         uses: actions/upload-pages-artifact@v1

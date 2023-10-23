@@ -4,4 +4,6 @@
 
 This repository hosts unofficial documentation for CivilNetworks' MNScript programming language.
 
+This repository also contains a custom generated `mnscript_docs.json` file, feel free to use this without attribution.
+
 It is currently a work in progress.
