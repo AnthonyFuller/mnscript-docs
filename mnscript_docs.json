@@ -896,10 +896,16 @@
                     "args": [
                         "BankAccount"
                     ],
+                    "argsDesc": [
+                        "The bank account to request management access for."
+                    ],
                     "desc": "Requests access to manage a bank account. This allows the script to manage transactions and deposits for the account. (CAN ONLY BE USED ON PAYMENT KIOSK TERMINALS)",
                     "name": "RequestAccountManagementAccess",
                     "returnDesc": "A StringResult representing the success of the request.",
-                    "returnType": "StringResult"
+                    "returnType": "StringResult",
+                    "argsName": [
+                        "account"
+                    ]
                 },
                 {
                     "args": [
@@ -936,8 +942,8 @@
                     "returnDesc": "Result of bitwise AND operation.",
                     "returnType": "number",
                     "argsName": [
-                        "num1",
-                        "num2"
+                        "value1",
+                        "value2"
                     ]
                 },
                 {
@@ -2083,7 +2089,7 @@
                     "returnDesc": "The found device",
                     "returnType": "ButtonDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2109,7 +2115,7 @@
                     "returnDesc": "The found device",
                     "returnType": "InputButtonDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2134,7 +2140,7 @@
                     "returnDesc": "The found device",
                     "returnType": "KeypadDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2160,7 +2166,7 @@
                     "returnDesc": "The found device",
                     "returnType": "MetalDetectorDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2186,7 +2192,7 @@
                     "returnDesc": "The found device",
                     "returnType": "MotionDetectorDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2212,7 +2218,7 @@
                     "returnDesc": "The found device",
                     "returnType": "NumpadTriggerDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2238,7 +2244,7 @@
                     "returnDesc": "The found device",
                     "returnType": "PaymentButtonDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2264,7 +2270,7 @@
                     "returnDesc": "The found device",
                     "returnType": "SoundEmitterDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2290,7 +2296,7 @@
                     "returnDesc": "The found device",
                     "returnType": "TargetDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2316,7 +2322,7 @@
                     "returnDesc": "The found device",
                     "returnType": "TextScreenDevice",
                     "argsName": [
-                        "device"
+                        "name"
                     ]
                 },
                 {
@@ -2777,14 +2783,19 @@
                     ],
                     "argsDesc": [
                         "The directory to place the file.",
-                        "The file name to append."
+                        "The file name to append.",
+                        "The contents to write."
                     ],
                     "desc": "Appends a string onto a file.",
                     "example": "using File;\nusing Console;\nusing System;\n\n// Appends the text \"\\n My text hello!\" in to \"my_file.txt\" in \"r/documents\".\n\nStringResult result = File.Append(\"r/documents\", \"my_file.txt\", \"\\n My text hello!\");\n\nif(result.GetResult()){\n    Console.WriteLine(\"The file was successfully appended!\");\n}else{\n    // If the file could not be appended, the result string contains the reason.\n    Console.WriteLine(\"Error: \"..result.GetString());\n}",
                     "name": "Append",
                     "returnDesc": "A StringResult representing the success/failure of the operation.",
                     "returnType": "StringResult",
-                    "argsName": []
+                    "argsName": [
+                        "dir",
+                        "filename",
+                        "contents"
+                    ]
                 },
                 {
                     "args": [
@@ -2821,7 +2832,7 @@
                     "returnType": "StringResult",
                     "argsName": [
                         "dir",
-                        "file"
+                        "filename"
                     ]
                 },
                 {
@@ -2856,7 +2867,7 @@
                     "returnType": "bool",
                     "argsName": [
                         "dir",
-                        "file"
+                        "filename"
                     ]
                 },
                 {
@@ -2940,7 +2951,7 @@
                     "returnType": "StringResult",
                     "argsName": [
                         "dir",
-                        "file"
+                        "filename"
                     ]
                 },
                 {
@@ -2977,7 +2988,7 @@
                     "returnType": "number",
                     "argsName": [
                         "dir",
-                        "file"
+                        "filename"
                     ]
                 },
                 {
@@ -2989,7 +3000,7 @@
                     "argsDesc": [
                         "The directory to place the file.",
                         "The file name to write.",
-                        "The contents to write"
+                        "The contents to write."
                     ],
                     "desc": "Writes / overrides a file.",
                     "example": "using File;\nusing Console;\nusing System;\n\n// Writes the text \"My text hello!\" in to \"my_file.txt\" in \"r/documents\".\n\nStringResult result = File.Write(\"r/documents\", \"my_file.txt\", \"My text hello!\");\n\nif(result.GetResult()){\n    Console.WriteLine(\"The file was successfully written!\");\n}else{\n    // If the file could not be written, the result string contains the reason.\n    Console.WriteLine(\"Error: \"..result.GetString());\n}",
@@ -2998,7 +3009,7 @@
                     "returnType": "StringResult",
                     "argsName": [
                         "dir",
-                        "name",
+                        "filename",
                         "contents"
                     ]
                 }
@@ -3281,8 +3292,8 @@
                     "returnDesc": "The larger of the two values provided",
                     "returnType": "number",
                     "argsName": [
-                        "num1",
-                        "num2"
+                        "value1",
+                        "value2"
                     ]
                 },
                 {
@@ -3299,8 +3310,8 @@
                     "returnDesc": "The smaller of the two values provided",
                     "returnType": "number",
                     "argsName": [
-                        "num1",
-                        "num2"
+                        "value1",
+                        "value2"
                     ]
                 },
                 {
@@ -3634,19 +3645,31 @@
                     "args": [
                         "Player"
                     ],
+                    "argsDesc": [
+                        "The player we want to find the org of."
+                    ],
                     "desc": "Gets the organization of the Player",
                     "name": "GetOrg",
                     "returnDesc": "The organization name",
-                    "returnType": "Org"
+                    "returnType": "Org",
+                    "argsName": [
+                        "ply"
+                    ]
                 },
                 {
                     "args": [
                         "Player"
                     ],
+                    "argsDesc": [
+                        "The player we want to find the org of."
+                    ],
                     "desc": "Gets the organization name of the Player",
                     "name": "GetOrgName",
                     "returnDesc": "The organization name",
-                    "returnType": "string"
+                    "returnType": "string",
+                    "argsName": [
+                        "ply"
+                    ]
                 }
             ],
             "name": "Orgs"
@@ -4211,7 +4234,7 @@
                     "returnDesc": "The number of miners which successfully changed their wallet address",
                     "returnType": "number",
                     "argsName": [
-                        "address"
+                        "wallet"
                     ]
                 },
                 {
