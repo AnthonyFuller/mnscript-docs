@@ -113,6 +113,9 @@ function generateFunctionSignature(data: MNScriptFunction, types: MNScriptTypes,
             if (lookup in types)
                 value = `<a href="${types[lookup]}">${value}</a>`
 
+            if (data.argsName && i < data.argsName.length)
+                value += ` ${data.argsName[i]}`
+
             sig += `${value}${i + 1 != data.args.length ? ", " : ""}`
         }
     }
@@ -140,6 +143,10 @@ function generateFunctionPage(data: MNScriptFunction, types: MNScriptTypes, pare
             } else {
                 page += value
             }
+
+            if (data.argsName && i < data.argsName.length)
+                page += ` ${data.argsName[i]}`
+
             page += "</code>"
 
             // If the function has args, it may also have descriptions.
@@ -225,6 +232,7 @@ export async function getMNScriptData(): Promise<MNScriptData> {
         libraries: [],
         // Prefill the types LUT with primitives.
         types: {
+            "any": "/fundamentals/syntax#any-type",
             "number": "/fundamentals/syntax#primitives",
             "string": "/fundamentals/syntax#primitives",
             "bool": "/fundamentals/syntax#primitives"
