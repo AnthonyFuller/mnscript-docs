@@ -38,7 +38,7 @@ MNScript has three "primitive" data types which all other data types work with.
 ### Any Type
 The `any` type is exactly what it says on the tin, it accepts any type. You cannot use this in user scripts, and it will only be seen used in built-in libraries.
 
-It's a "[bodge](https://en.wiktionary.org/wiki/bodge)" due to MNScript not having generics. It's most notably found in [`Util.ToString`](/libraries/Util/ToString) and the [`Array`](/libraries/Array) library.
+It's a "[bodge](https://en.wiktionary.org/wiki/bodge)" due to MNScript not having generics. It's most notably found in `Util.ToString` and the `Array` library.
 
 All other types are **classes** either exposed through built-in libraries or user-generated files (more on this later).
 
