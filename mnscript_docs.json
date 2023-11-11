@@ -2402,6 +2402,7 @@
                             "desc": "Posts the embed to the Discord bot using a Secret.",
                             "example": "using System;\nusing Discord;\nusing Secret;\n// You need to make sure the secret is set beforehand with 'secrets add discord-webhook <YOUR_KEY_HERE>'\n// Your webhook shoud look something like \"32094820394823489/5ASKdaxdfjk2bLKLDjlaj3sdlJDAS3dDjsadas43KJHLSAddDnkjASDkhlgijods243LVOwqQdjsakdkAFHkjfh78AJmL\"\nSecret secret = Secrets.GetSecret(\"discord-webhook\");\n\n// Creates a DiscordEmbed, adds some fields and posts it to your webhook\nDiscordEmbed embed = new DiscordEmbed();\nembed.SetTitle(\"My Webhook\");\nembed.AddField(\"First Field\", \"First Content\", true);\nembed.AddField(\"Second Field\", \"Second Content\", true);\nembed.AddField(\"Last Field\", \"Last Content\", false);\nembed.PostWithSecrets(secret);",
                             "name": "PostWithSecret",
+                            "needsAdmin": true,
                             "returnType": "StringResult",
                             "argsName": [
                                 "secret"
@@ -2789,6 +2790,7 @@
                     "desc": "Appends a string onto a file.",
                     "example": "using File;\nusing Console;\nusing System;\n\n// Appends the text \"\\n My text hello!\" in to \"my_file.txt\" in \"r/documents\".\n\nStringResult result = File.Append(\"r/documents\", \"my_file.txt\", \"\\n My text hello!\");\n\nif(result.GetResult()){\n    Console.WriteLine(\"The file was successfully appended!\");\n}else{\n    // If the file could not be appended, the result string contains the reason.\n    Console.WriteLine(\"Error: \"..result.GetString());\n}",
                     "name": "Append",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success/failure of the operation.",
                     "returnType": "StringResult",
                     "argsName": [
@@ -2809,6 +2811,7 @@
                     "desc": "Created a directory.",
                     "example": "using File;\nusing Console;\nusing System;\nusing Application;\n\n// Requests Admin Permission \nApplication.RequestAdminPrivilege();\n\n// Creates the directory \"Files\" in \"r/documents\".\n\nStringResult result = File.CreateDir(\"r/documents\", \"Files\");\n\nif(result.GetResult()){\n    Console.WriteLine(\"The directory was successfully created!\");\n}else{\n    // If the directory could not be written, the result string contains the reason.\n    Console.WriteLine(\"Error: \"..result.GetString());\n}",
                     "name": "CreateDir",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success/failure of the operation.",
                     "returnType": "StringResult",
                     "argsName": [
@@ -2828,6 +2831,7 @@
                     "desc": "Deletes a file in a directory.",
                     "example": "using File;\nusing Console;\nusing System;\n\n// Deletes \"bf_password.exe\" in \"r/programs\".\n\nStringResult result = File.Delete(\"r/programs\", \"bf_password.exe\");\n\nif(result.GetResult()){\n    Console.WriteLine(\"The file was deleted!\");\n}else{\n    // If the file could not be deleted, the result string contains the reason.\n    Console.WriteLine(\"Error: \"..result.GetString());\n}",
                     "name": "Delete",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success/failure of the operation.",
                     "returnType": "StringResult",
                     "argsName": [
@@ -2947,6 +2951,7 @@
                     "desc": "Reads the contents of a file.",
                     "example": "using File;\nusing Console;\nusing System;\n\n// Reads \"my_file.txt\" in \"r/documents\".\n\nStringResult result = File.Read(\"r/documents\", \"my_file.txt\");\n\nif(result.GetResult()){\n    // If the file was read, the contents will be contained in the result's string.\n    string fileContents = result.GetString();\n}else{\n    // If the file could not be read, the result string contains the reason.\n    Console.WriteLine(\"Error: \"..result.GetString());\n}",
                     "name": "Read",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success/failure of the operation.",
                     "returnType": "StringResult",
                     "argsName": [
@@ -2966,6 +2971,7 @@
                     "desc": "Deletes a directory.",
                     "example": "using File;\nusing Console;\nusing System;\nusing Application;\n\n// Requests Admin Permission \nApplication.RequestAdminPrivilege();\n\n// Deletes \"Files\" in \"r/programs\".\n\nStringResult result = File.RemoveDir(\"r/programs\", \"Files\");\n\nif(result.GetResult()){\n    Console.WriteLine(\"The directory was deleted!\");\n}else{\n    // If the directory could not be deleted, the result string contains the reason.\n    Console.WriteLine(\"Error: \"..result.GetString());\n}",
                     "name": "RemoveDir",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success/failure of the operation.",
                     "returnType": "StringResult",
                     "argsName": [
@@ -3005,6 +3011,7 @@
                     "desc": "Writes / overrides a file.",
                     "example": "using File;\nusing Console;\nusing System;\n\n// Writes the text \"My text hello!\" in to \"my_file.txt\" in \"r/documents\".\n\nStringResult result = File.Write(\"r/documents\", \"my_file.txt\", \"My text hello!\");\n\nif(result.GetResult()){\n    Console.WriteLine(\"The file was successfully written!\");\n}else{\n    // If the file could not be written, the result string contains the reason.\n    Console.WriteLine(\"Error: \"..result.GetString());\n}",
                     "name": "Write",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success/failure of the operation.",
                     "returnType": "StringResult",
                     "argsName": [
@@ -4698,6 +4705,7 @@
                     ],
                     "desc": "Adds or updates a secret on the remote server",
                     "name": "AddSecret",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success of the operation",
                     "returnType": "StringResult",
                     "argsName": [
@@ -4792,6 +4800,7 @@
                     "args": [],
                     "desc": "Gets a list of all running MNScript processes on the remote server.",
                     "name": "GetRunningProcesses",
+                    "needsAdmin": true,
                     "returnDesc": "A list of all running MNScript processes on the remote server.",
                     "returnType": "Process[]"
                 },
@@ -4799,6 +4808,7 @@
                     "args": [],
                     "desc": "Gets an array of all secret names on stored on the SSH server.",
                     "name": "GetSecrets",
+                    "needsAdmin": true,
                     "returnDesc": "An array of strings containing all secret names stored on the SSH server, or a null object if not connected.",
                     "returnType": "string[]"
                 },
@@ -4815,6 +4825,7 @@
                     ],
                     "desc": "Gets whether a process with the given Id is running on the remote server.",
                     "name": "IsProcessRunning",
+                    "needsAdmin": true,
                     "returnDesc": "True if a process with the given Id is running on the remote server.",
                     "returnType": "bool"
                 },
@@ -4824,6 +4835,7 @@
                     ],
                     "desc": "Gets the runtime of a process with the given Id.",
                     "name": "ProcessRuntime",
+                    "needsAdmin": true,
                     "returnDesc": "The runtime of a process with the given Id.",
                     "returnType": "number"
                 },
@@ -4836,6 +4848,7 @@
                     ],
                     "desc": "Removes a secret from the remote server",
                     "name": "RemoveSecret",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success of the operation",
                     "returnType": "StringResult",
                     "argsName": [
@@ -4854,6 +4867,7 @@
                     "desc": "Executes an MNScript .mscx file on the remote server.",
                     "example": "using System;\nusing Console;\n\nif(SSH.IsConnected()){\n    StringResult result = SSH.StartProcess(\"c/programs\", \"MyProgram.mscx\");\n\n    if(result.GetResult()){\n        Console.WriteLine(\"Remote process started\");\n    }else{\n        // If the program failed to start, the error will be in the result's string.\n        Console.WriteLine(\"Error: \"..result.GetString());\n    }\n}",
                     "name": "StartProcess",
+                    "needsAdmin": true,
                     "returnDesc": "A StringResult representing the success of the operation.",
                     "returnType": "StringResult",
                     "argsName": [
@@ -4865,6 +4879,7 @@
                     "args": [],
                     "desc": "Closes all active MNScript processes on the remote server.",
                     "name": "StopAllProcesses",
+                    "needsAdmin": true,
                     "returnDesc": "The number of processes stopped.",
                     "returnType": "number"
                 },
@@ -4878,6 +4893,7 @@
                     "desc": "Stops an MNScript process with the given name on the remote server.",
                     "example": "using System;\n\nif(SSH.IsConnected()){\n    SSH.StopProcess(\"myProgramId\");\n}",
                     "name": "StopProcess",
+                    "needsAdmin": true,
                     "returnDesc": "True if the program was stopped",
                     "returnType": "bool",
                     "argsName": [
@@ -7782,6 +7798,7 @@
                     "args": [],
                     "desc": "Gets a list of all running MNScript processes.",
                     "name": "GetRunningProcesses",
+                    "needsAdmin": true,
                     "returnDesc": "A list of all running MNScript processes.",
                     "returnType": "Process[]"
                 },
@@ -7847,6 +7864,7 @@
                     ],
                     "desc": "Gets whether a process with the given Id is running.",
                     "name": "IsProcessRunning",
+                    "needsAdmin": true,
                     "returnDesc": "True if a process with the given Id is running.",
                     "returnType": "bool"
                 },
@@ -7864,6 +7882,7 @@
                     "desc": "Locks the terminal.",
                     "example": "using System;\n\nSystem.Lock();",
                     "name": "Lock",
+                    "needsAdmin": true,
                     "returnType": "Unknown",
                     "argsName": []
                 },
@@ -7888,6 +7907,7 @@
                     ],
                     "desc": "Gets the runtime of a process with the given Id.",
                     "name": "ProcessRuntime",
+                    "needsAdmin": true,
                     "returnDesc": "The runtime of a process with the given Id.",
                     "returnType": "number"
                 },
@@ -7901,6 +7921,7 @@
                     "desc": "Runs a console command",
                     "example": "using System;\n\nSystem.RunCommand(\"shutdown\"); // F in chat",
                     "name": "RunCommand",
+                    "needsAdmin": true,
                     "returnType": "Unknown",
                     "argsName": [
                         "command"
@@ -7911,6 +7932,7 @@
                     "desc": "Shuts down the terminal",
                     "example": "using System;\n\n// Shuts down the computer.\nSystem.Shutdown();",
                     "name": "Shutdown",
+                    "needsAdmin": true,
                     "returnType": "Unknown"
                 },
                 {
@@ -7940,6 +7962,7 @@
                     "desc": "Executes a MNScript .mscx file",
                     "example": "using System;\n\nSystem.StartProcess(\"r/documents\", \"MyProgram.mscx\");",
                     "name": "StartProcess",
+                    "needsAdmin": true,
                     "returnDesc": "True if the program was successfully started.",
                     "returnType": "bool",
                     "argsName": [
@@ -7951,6 +7974,7 @@
                     "args": [],
                     "desc": "Closes all active MNScript processes.",
                     "name": "StopAllProcesses",
+                    "needsAdmin": true,
                     "returnDesc": "The number of processes stopped.",
                     "returnType": "number"
                 },
@@ -7964,6 +7988,7 @@
                     "desc": "Stops an MNScript process with the given name.",
                     "example": "using System;\n                    \nSystem.StopProcess(\"myProgramId\");",
                     "name": "StopProcess",
+                    "needsAdmin": true,
                     "returnDesc": "True if the program was stopped",
                     "returnType": "bool",
                     "argsName": [
@@ -8210,6 +8235,7 @@
                             "desc": "Posts a request to IFTTT webhook service.",
                             "example": "using System;\nusing Web;\nusing Secrets;\n\n// Example key goto https://ifttt.com/maker_webhooks/settings to get your key.\n// Event is the name created when making your applet.\n\n// You need to make sure the secret is set beforehand with 'secret add ifttt-key <YOUR_KEY_HERE>'\n// Your webhook shoud look something like \"QdjsakdkAFHkjfh78AJmL\"\nSecret secret = Secrets.GetSecret(\"ifttt-key\");\n\nstring event = \"music\";\n\n// Creates a IFTTT, adds some fields and posts it to your webhook\nIFTTT hook = new IFTTT();\n\nhook.Post(secret, event);",
                             "name": "Post",
+                            "needsAdmin": true,
                             "returnType": "StringResult",
                             "argsName": [
                                 "secret",
@@ -8233,6 +8259,7 @@
                             "desc": "Posts message to Telegram.",
                             "example": "using System;\nusing Web;\n\n// Messages will only go to authorised accounts.\n// https://api2.callmebot.com/txt/login.php  login and authorise via Telegram\n// Or\n// Search for user @CallMeBot_txtbot and send the message \"/start\"\n\n\nstring users = \"relman\"; // if sending to multiple people use | , e.g. \"relz|onariz\"\nstring message = \"You are being raided!!\";\n\n// Creates a Telegram, adds some fields and posts it to your webhook\nTelegram hook = new Telegram();\n\nhook.PostTelegram(users, message);",
                             "name": "PostTelegram",
+                            "needsAdmin": true,
                             "returnType": "StringResult",
                             "argsName": [
                                 "username",
@@ -8258,6 +8285,7 @@
                             "desc": "Posts message to your WhatsApp.",
                             "example": "using System;\nusing Web;\nusing Secrets;\n\n//1. Add the phone number +34 644 31 95 65 into your Phone Contacts. (Name it it as you wish)\n//2. Send this message \"I allow callmebot to send me messages\" to the new Contact created (using WhatsApp of course)\n//3. Wait until you receive the message \"API Activated for your phone number. Your APIKEY is 123123\" from the bot.\n//   Note: If you don't receive the ApiKey in 2 minutes, please try again after 24hs.\n// You need to make sure the secret is set beforehand with 'secret add whatsapp-key <YOUR_KEY_HERE>'\n// You need to make sure the secret is set beforehand with 'secret add whatsapp-number <YOUR_NUMBER_HERE>' with country code e.g. +44\n// Your webhook shoud look something like \"12341234\"\n// Your phone number shoud look something like \"+447221123123\"\n\nSecret secretKey = Secrets.GetSecret(\"whatsapp-key\");\nSecret secretNumber = Secrets.GetSecret(\"whatsapp-number\");\nstring message = \"You are being raided!!\";\n\n// Creates a WhatsApp, adds some fields and posts it to your webhook\nWhatsApp hook = new WhatsApp();\n\nhook.PostWhatsApp(secretKey, secretNumber, message);",
                             "name": "PostWhatsApp",
+                            "needsAdmin": true,
                             "returnType": "StringResult",
                             "argsName": [
                                 "key",
