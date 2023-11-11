@@ -35,6 +35,7 @@ export interface MNScriptFunction {
     returnType?: string
     returnDesc?: string
     argsName?: string[] // Unofficial
+    needsAdmin?: boolean // Unofficial
 }
 
 export interface MNScriptClass {
@@ -129,6 +130,10 @@ function generateFunctionPage(data: MNScriptFunction, types: MNScriptTypes, pare
 
     // Generate a "fake" codeblock, that allows us to place links inside.
     page += `::: raw\n<Codeblock>${generateFunctionSignature(data, types, parent)}</Codeblock>\n:::\n`
+
+    if (data.needsAdmin) {
+        page += `::: warning\nThis function requires your script to have administrator privileges!\n:::\n`
+    }
 
     page += `## Description\n${data.desc ?? "*No description available*"}\n`
 
