@@ -39,16 +39,8 @@ const CONFIG: UserConfig<DefaultTheme.Config> = {
     },
     cleanUrls: true,
     markdown: {
-        languages: [
-            {
-                name: "mnscript",
-                scopeName: "source.mnscript",
-                // @ts-expect-error
-                path: "../../private/syntax/mnscript.tmlanguage.json",
-                displayName: "MNScript",
-                aliases: ["mnsc", "msc"]
-            }
-        ]
+        // @ts-expect-error
+        languages: [mnscript]
     },
     sitemap: {
         hostname: "https://mnscript.com"

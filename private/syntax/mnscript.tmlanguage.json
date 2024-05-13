@@ -1,6 +1,7 @@
 {
 	"name": "mnscript",
 	"displayName": "MNScript",
+	"aliases": ["mnsc", "msc"],
 	"patterns": [
 		{
 			"include": "#storage"
