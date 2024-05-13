@@ -1,4 +1,5 @@
 import { DefaultTheme, defineConfig, HeadConfig, resolvePages, UserConfig } from "vitepress"
+import mnscript from "../private/syntax/mnscript.tmlanguage.json";
 
 const CONFIG: UserConfig<DefaultTheme.Config> = {
     title: "MNScript",
@@ -40,8 +41,9 @@ const CONFIG: UserConfig<DefaultTheme.Config> = {
     markdown: {
         languages: [
             {
-                id: "mnscript",
+                name: "mnscript",
                 scopeName: "source.mnscript",
+                // @ts-expect-error
                 path: "../../private/syntax/mnscript.tmlanguage.json",
                 displayName: "MNScript",
                 aliases: ["mnsc", "msc"]
@@ -93,6 +95,7 @@ const reference: DefaultTheme.SidebarItem = {
 }
 
 // Add the generated API docs to the sidebar.
+// @ts-expect-error
 const pages = await resolvePages("./", CONFIG)
 
 let libraries: Record<string, DefaultTheme.SidebarItem> = {}

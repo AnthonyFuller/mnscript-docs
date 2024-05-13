@@ -8,11 +8,12 @@
     "type": "module",
     "devDependencies": {
         "@types/node": "^20.6.0",
-        "vitepress": "^1.0.0-rc.23"
+        "vitepress": "^1.1.4"
     },
     "scripts": {
         "dev": "vitepress dev",
         "build": "vitepress build",
         "preview": "vitepress preview"
-    }
+    },
+    "packageManager": "yarn@4.2.2"
 }
