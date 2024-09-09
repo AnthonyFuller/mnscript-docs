@@ -14,4 +14,6 @@ If you're well versed in MNScript already, you can check out the API reference o
 
 ## Notices
 
-This website is in no way affiliated with CivilNetworks.
+The domain `mnscript.com` is owned by CivilNetworks.
+
+The content hosted by a third-party; [Anthony Fuller](https://anthonyfuller.dev).
