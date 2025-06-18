@@ -8,7 +8,7 @@ const CONFIG: UserConfig<DefaultTheme.Config> = {
     themeConfig: {
         logo: "/images/logo.png",
         nav: [
-            { text: "CivilNetworks", link: "https://civilgamers.com" }
+            { text: "CivilNetworks", link: "https://civilnetworks.net" }
         ],
         sidebar: [
             {
