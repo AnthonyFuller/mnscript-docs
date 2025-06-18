@@ -7,13 +7,16 @@
     "license": "GPL-3.0-or-later",
     "type": "module",
     "devDependencies": {
-        "@types/node": "^20.6.0",
-        "vitepress": "^1.1.4"
+        "@types/node": "^22.13.14",
+        "vitepress": "^1.6.3"
     },
     "scripts": {
         "dev": "vitepress dev",
         "build": "vitepress build",
         "preview": "vitepress preview"
     },
-    "packageManager": "yarn@4.2.2"
+    "volta": {
+        "node": "22.16.0",
+        "pnpm": "10.12.1"
+    }
 }

@@ -39,7 +39,6 @@ const CONFIG: UserConfig<DefaultTheme.Config> = {
     },
     cleanUrls: true,
     markdown: {
-        // @ts-expect-error
         languages: [mnscript]
     },
     sitemap: {
